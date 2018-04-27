@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">SWE311Project</string>
+
+    <string name="title_activity_main_pager">MainPagerActivity</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_sign_up">SignUpActivity</string>
+    <string name="title_activity_property">PropertyActivity</string>
+    <string name="title_activity_seller">SellerActivity</string>
+    <string name="title_activity_chat">ChatActivity</string>
+    <string name="title_activity_comment">CommentActivity</string>
+</resources>

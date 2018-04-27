@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RatingView">
+        <attr name="activeColor" format="color"/>
+        <attr name="inactiveColor" format="color"/>
+        <attr name="halfStar" format="boolean"/>
+        <attr name="changeable" format="boolean"/>
+        <attr name="numOfStars" format="integer"/>
+        <attr name="starsMargin" format="dimension" />
+        <attr name="rating" format="float" />
+    </declare-styleable>
+</resources>
