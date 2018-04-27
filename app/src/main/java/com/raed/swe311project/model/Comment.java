@@ -1,8 +1,5 @@
 package com.raed.swe311project.model;
 
-/**
- * Created by Raed on 18/04/2018.
- */
 
 public class Comment {
 

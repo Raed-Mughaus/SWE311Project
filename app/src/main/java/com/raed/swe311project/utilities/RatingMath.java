@@ -5,10 +5,6 @@ import com.raed.swe311project.model.Rating;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Raed on 27/04/2018.
- */
-
 public class RatingMath {
 
 

@@ -13,16 +13,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This class contains methods to map database documents to java objects.
+ * This class contains methods to map:
+ *      a database document to a java object.
+ *      a java object to a map
  * @see VariableNames
  */
 
 public class ObjectMapper {
 
     /**
-     * Map a DocumentSnapshot to a property object.
-     * @param document to be mapped to a property object
-     * @return a property object
+     * Map a {@link DocumentSnapshot} to a {@link Property} object.
+     * @param document to be mapped to a {@link Property} object
+     * @return a {@link Property} object
      **/
     public static Property documentToProperty(DocumentSnapshot document) {
         Property property = new Property();
@@ -37,9 +39,9 @@ public class ObjectMapper {
     }
 
     /**
-     * Map a DocumentSnapshot to a Rating object.
-     * @param document to be mapped to a Rating object
-     * @return a rating object
+     * Map a {@link DocumentSnapshot} to a {@link Rating} object.
+     * @param document to be mapped to a {@link Rating} object
+     * @return a {@link Rating} object
      **/
     public static Rating documentToRating(DocumentSnapshot document) {
         Rating rating = new Rating(document.getId());
@@ -51,9 +53,9 @@ public class ObjectMapper {
     }
 
     /**
-     * Map a DocumentSnapshot to a comment object.
-     * @param document to be mapped to a Comment object
-     * @return a comment object
+     * Maps a {@link DocumentSnapshot} to a {@link Comment} object.
+     * @param document to be mapped to a {@link Comment} object
+     * @return a {@link Comment} instance
      **/
     public static Comment documentToComment(QueryDocumentSnapshot document) {
         Comment comment = new Comment();
@@ -65,7 +67,11 @@ public class ObjectMapper {
         return comment;
     }
 
-
+    /**
+     * Maps a {@link Comment} to a variable-value {@link Map}.
+     * @param comment to be mapped to a variable-value {@link Map}.
+     * @return a variable-value {@link Map}.
+     */
     public static Map<String, Object> commentToMap(Comment comment){
         Map<String, Object> commentMap = new HashMap<>();
         commentMap.put(VariableNames.CommentsCollection.COMMENT, comment.getComment());
@@ -76,8 +82,8 @@ public class ObjectMapper {
     }
 
     /**
-     * Map a {@link Rating} to a variable-value {@link Map}. Variable names
-     * can be found in {@link VariableNames}.
+     * Map a {@link Rating} to a variable-value {@link Map}. Variable names can be found in
+     * {@link VariableNames}.
      * @param rating to be mapped
      * @return a variable-value {@link Map}.
      */

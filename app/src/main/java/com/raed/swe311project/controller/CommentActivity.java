@@ -3,6 +3,7 @@ package com.raed.swe311project.controller;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,10 +22,12 @@ import com.raed.swe311project.model.Comment;
 import com.raed.swe311project.DataManager;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class CommentActivity extends AppCompatActivity implements MessageDialog.Callback{
 
@@ -36,6 +39,11 @@ public class CommentActivity extends AppCompatActivity implements MessageDialog.
 
     private String mPropertyID;
 
+    /**
+     * Create an intent to start this activity.
+     * @param propertyID id of a property to be displayed when this activity is created.
+     * @return an intnet that can be used to start this activity
+     */
     public static Intent newIntent(Context context, String propertyID){
         Intent intent = new Intent(context, CommentActivity.class);
         intent.putExtra(KEY_PROPERTY_ID, propertyID);
@@ -83,7 +91,7 @@ public class CommentActivity extends AppCompatActivity implements MessageDialog.
 
     private void postComment(){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user == null){
+        if (user == null){//if the user has not signed in.
             MessageDialog messageDialog =
                     MessageDialog.newInstance(
                             "You need to sign in or sign up to be able to post comments",
@@ -92,9 +100,10 @@ public class CommentActivity extends AppCompatActivity implements MessageDialog.
             messageDialog.show(getSupportFragmentManager(), null);
             return;
         }
+
         Comment comment = new Comment();
         String commentString = mCommentEditText.getText().toString();
-        if (commentString.length() == 0){
+        if (commentString.length() == 0){//if the user enters nothing in the text field
             Toast.makeText(CommentActivity.this, "Please enter a comment", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -109,10 +118,10 @@ public class CommentActivity extends AppCompatActivity implements MessageDialog.
 
         mCommentAdapter.mComments.add(comment);
         int position = mCommentAdapter.mComments.size() - 1;
-        mCommentAdapter.notifyItemInserted(position);
-        mRecyclerView.smoothScrollToPosition(position);
+        mCommentAdapter.notifyItemInserted(position);//update the UI with the new comment
+        mRecyclerView.smoothScrollToPosition(position);//scroll down
 
-        mCommentEditText.setText("");
+        mCommentEditText.setText("");//clear the comment edit text from the typed comment.
     }
 
     //this is used for communication with MessageDialog
@@ -122,11 +131,10 @@ public class CommentActivity extends AppCompatActivity implements MessageDialog.
             startActivity(new Intent(this, LoginActivity.class));
     }
 
-    private class CommentHolder extends RecyclerView.ViewHolder{
+    private static class CommentHolder extends RecyclerView.ViewHolder{
 
         private TextView mCommentTextView;
         private TextView mDateTextView;
-
 
         CommentHolder(View itemView) {
             super(itemView);
@@ -138,7 +146,12 @@ public class CommentActivity extends AppCompatActivity implements MessageDialog.
             itemView.setBackgroundColor(even ? 0xffffffff : 0x00ffffff);
 
             mCommentTextView.setText(comment.getComment());
-            mDateTextView.setText(new Date(comment.getDate()).toString());
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(new Date(comment.getDate()));
+            int year = calendar.get(Calendar.YEAR);
+            String month = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+            mDateTextView.setText(day + " " + month + " " + year);
         }
     }
 

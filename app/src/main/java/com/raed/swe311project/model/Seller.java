@@ -1,8 +1,5 @@
 package com.raed.swe311project.model;
 
-/**
- * Created by Raed on 15/04/2018.
- */
 
 public class Seller {
 

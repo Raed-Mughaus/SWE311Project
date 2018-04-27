@@ -60,7 +60,7 @@
                 android:textStyle="bold" />
 
             <Button
-                android:id="@+id/skip"
+                android:id="@+id/skip_login"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

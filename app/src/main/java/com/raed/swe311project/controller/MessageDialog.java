@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.raed.swe311project.R;
 
 /**
- * Created by raed on 25/07/17.
  *
  * A simple dialog that show a message with 2 buttons, and set the result based on the clicked
  * button.

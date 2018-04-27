@@ -28,11 +28,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by Raed on 12/04/2018.
- *
  * This class store/fetch data from the database.
- *
- */
+ **/
 
 //todo find a way to prevent memory leaks from happening, the task callback may have a reference to an activity
 //todo move the rating logic to the server side to make it more secure and efficient.
@@ -73,6 +70,7 @@ public class DataManager {
                             }
                             callback.onTaskExecuted(properties);
                         } else {
+                            Log.e(TAG, "Error while loading properties: ", task.getException());
                             callback.onError(task.getException());
                         }
                     }
@@ -110,7 +108,7 @@ public class DataManager {
      * Load all comments from the database for a specific property.
      * @param propertyID to load comments associated with this id
      * @param callback pass an instance of this class to receive the comments and to be informed
-     *                weather the task is successful completed or not.
+     *                weather the task is successfully completed or not.
      */
     public void loadPropertyComments(final String propertyID, final TaskCallback<List<Comment>> callback){
         mFirebaseFirestore
@@ -160,6 +158,7 @@ public class DataManager {
         Log.d(TAG, "Rate property " + property.getID() + " by " + rating);
         if (rating < 0 || rating > 5)
             throw new IllegalArgumentException("Rating must be between 0 and 5");
+
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null)
             throw new SecurityException("Rating a property requires an authorized user");
@@ -177,13 +176,16 @@ public class DataManager {
                         if (task.isSuccessful()){
                             Rating r = task.getResult();
                             callback.onTaskExecuted(r);
-                        }else
-                            Log.e(TAG, task.getException().getMessage(), task.getException());
+                        }else {
+                            Exception exception = task.getException();
+                            Log.e(TAG, exception.getMessage(), exception);
+                            callback.onError(exception);
+                        }
                     }
                 });
     }
 
-    //we need to run transaction to make sure the rating data is consistent.
+    //we need a transaction to make sure the rating data is consistent.
     private Rating executeRatePropertyTransaction(String propertyID, float newUserRating, String userID, Transaction transaction) throws FirebaseFirestoreException {
         DocumentReference ratingDocRef = mFirebaseFirestore
                 .document(RatingCollection.COLLECTION_NAME + "/" + propertyID);

@@ -15,9 +15,6 @@ import android.view.View;
 
 import com.raed.swe311project.R;
 
-/**
- * Created by Raed on 21/03/2018.
- */
 
 public class RatingView extends View {
 

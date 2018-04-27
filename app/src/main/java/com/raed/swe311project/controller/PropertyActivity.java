@@ -30,6 +30,12 @@ public class PropertyActivity extends AppCompatActivity implements RatingDialog.
     private TextView mNumOfRating;
     private TextView mRatingTextView;
 
+    /**
+     *
+     * @param context
+     * @param property
+     * @return
+     */
     public static Intent getIntent(Context context, Property property){
         Intent intent =  new Intent(context, PropertyActivity.class);
         intent.putExtra(EXTRA_KEY_PROPERTY, property);
@@ -44,9 +50,18 @@ public class PropertyActivity extends AppCompatActivity implements RatingDialog.
         mProperty = (Property) getIntent().getSerializableExtra(EXTRA_KEY_PROPERTY);
 
         TextView shortDescriptionTextView = findViewById(R.id.info);
+
+        int price = mProperty.getPrice();
+        String priceStr;
+        if (price >= 1000000)
+            priceStr = (mProperty.getPrice()/1000000) + "M $";
+        else if (price >= 1000)
+            priceStr  = (mProperty.getPrice()/1000) + "K $";
+        else
+            priceStr = mProperty.getPrice() + " $";
         shortDescriptionTextView.setText(
-                mProperty.getPropertyType() + " in " + mProperty.getLocation()
-                        + "\nPrice: " + mProperty.getPrice() + " $");
+                mProperty.getPropertyType() + " in " + mProperty.getLocation() + " for " + priceStr
+        );
 
         TextView longDescriptionTextView = findViewById(R.id.description);
         longDescriptionTextView.setText(mProperty.getDescription());
@@ -111,6 +126,13 @@ public class PropertyActivity extends AppCompatActivity implements RatingDialog.
                         });
     }
 
+    //This is for communcation with MessageDialog
+    @Override
+    public void onButtonClicked(boolean positiveButtonClicked) {
+        if (positiveButtonClicked)//if the user clicked let's go
+            startActivity(new Intent(this, LoginActivity.class));
+    }
+
     private void updateRating(){
         Rating rating = mProperty.getRating();
         if (rating == null){
@@ -123,12 +145,5 @@ public class PropertyActivity extends AppCompatActivity implements RatingDialog.
         float propertyRating = rating.getAvgRating();
         String propertyRatingStr = (propertyRating + "").substring(0, 3);//show only 2 digits
         mRatingTextView.setText((propertyRatingStr  + "/" + 5));
-    }
-
-    //This is for MessageDialog
-    @Override
-    public void onButtonClicked(boolean positiveButtonClicked) {
-        if (positiveButtonClicked)
-            startActivity(new Intent(this, LoginActivity.class));
     }
 }

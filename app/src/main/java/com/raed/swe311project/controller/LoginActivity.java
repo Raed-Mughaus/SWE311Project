@@ -40,18 +40,20 @@ public class LoginActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()){
-                                    Intent intent = new Intent(LoginActivity.this, PropertyListActivity.class);
+                                    Intent intent = new Intent(LoginActivity.this,
+                                            PropertyListActivity.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     startActivity(intent);
                                 }else {
-                                    Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LoginActivity.this, "Login failed",
+                                            Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
             }
         });
 
-        findViewById(R.id.skip).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.skip_login).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = PropertyListActivity.newIntent(LoginActivity.this, true);

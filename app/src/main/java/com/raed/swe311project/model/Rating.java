@@ -4,9 +4,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Raed on 18/04/2018.
- */
 
 public class Rating implements Serializable{
 

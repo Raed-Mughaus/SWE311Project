@@ -38,6 +38,13 @@ public class PropertyListActivity extends AppCompatActivity {
     private List<Property> mProperties;
     private List<Rating> mRatings;
 
+
+    /**
+     * Create an intent to start this activity.
+     * @param skipLogin if true this activity will allow users to browse the properties when started.
+     *                  Otherwise it will start the {@link LoginActivity}.
+     * @return an intent that can be used to start this activity
+     */
     public static Intent newIntent(Context context, boolean skipLogin){
         Intent intent = new Intent(context, PropertyListActivity.class);
         intent.putExtra(EXTRA_KEY_SKIP_LOGIN, skipLogin);
@@ -48,16 +55,6 @@ public class PropertyListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_property_list);
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user == null && !getIntent().getBooleanExtra(EXTRA_KEY_SKIP_LOGIN, false)){
-            Intent intent = new Intent(this, LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            mProperties = null;//so we update them next time
-            mRatings = null;//so update them next time
-            startActivity(intent);
-        }
-
         mRecyclerView = findViewById(R.id.recycler_view);
 
     }
@@ -65,13 +62,23 @@ public class PropertyListActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_activity, menu);
+        if (FirebaseAuth.getInstance().getCurrentUser() == null)
+            menu.findItem(R.id.sign_in_or_out).setTitle("Sign In");
+        else
+            menu.findItem(R.id.sign_in_or_out).setTitle("Sign Out");
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.sign_out) {
-            FirebaseAuth.getInstance().signOut();
+        if (item.getItemId() == R.id.sign_in_or_out) {
+            if (FirebaseAuth.getInstance().getCurrentUser() != null){
+                FirebaseAuth.getInstance().signOut();
+                item.setTitle("Sign In");
+            }else
+                item.setTitle("Sign Out");
+            mProperties = null;//so we update them next time
+            mRatings = null;//so update them next time
             startActivity(new Intent(this, LoginActivity.class));
         }
         return true;
@@ -145,6 +152,8 @@ public class PropertyListActivity extends AppCompatActivity {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    mProperties = null;//so we update them next time
+                    mRatings = null;//so update them next time
                     startActivity(PropertyActivity.getIntent(PropertyListActivity.this, mProperty));
                 }
             });

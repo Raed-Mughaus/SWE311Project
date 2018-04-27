@@ -14,9 +14,8 @@ import com.raed.swe311project.view.RatingView;
 
 
 /**
- * Created by Raed on 21/03/2018.
  *
- * Clients activities must implement RatingDialog.Callback interface to receive rating results.
+ * Client activities must implement {@link RatingDialog.Callback} interface to receive rating results.
  *
  */
 

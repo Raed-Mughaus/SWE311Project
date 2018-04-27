@@ -1,7 +1,7 @@
 package com.raed.swe311project.model;
 
 /**
- * Created by Raed on 12/04/2018.
+ * This class defines constant for the database filed names.
  */
 
 public class VariableNames {

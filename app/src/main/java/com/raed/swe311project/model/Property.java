@@ -2,10 +2,6 @@ package com.raed.swe311project.model;
 
 import java.io.Serializable;
 
-/**
- * Created by Raed on 09/04/2018.
- */
-
 public class Property implements Serializable{
 
     private String mID;
